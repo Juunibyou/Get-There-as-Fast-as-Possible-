@@ -5,7 +5,39 @@ package org.example;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class AppTest {
 
+    private Map<Integer, List<Edge>> buildExampleGraph() {  
+        Map<Integer, List<Edge>> graph = new HashMap<>();
+
+        addEdge(graph, 1, 2, 1);
+        addEdge(graph, 1, 5, 1);
+        addEdge(graph, 2, 3, 1);
+        addEdge(graph, 3, 4, 1);
+        addEdge(graph, 4, 5, 1);
+
+        return graph;
+    }
+
+    private void addEdge(Map<Integer, List<Edge>> graph, int from, int to, int weight) {
+        graph.putIfAbsent(from, new ArrayList<>());
+        graph.get(from).add(new Edge(to, weight));
+        graph.putIfAbsent(to, new ArrayList<>());
+    }
+
+    @Test
+    void testExamplePaths() {
+        Map<Integer, List<Edge>> graph = buildExampleGraph();
+
+        assertEquals(1, Dijkstra.shortestPath(graph, 1, 2));
+        assertEquals(1, Dijkstra.shortestPath(graph, 1, 5));
+        assertEquals(3, Dijkstra.shortestPath(graph, 2, 5));
+        assertEquals(-1, Dijkstra.shortestPath(graph, 5, 1));
+        assertEquals(-1, Dijkstra.shortestPath(graph, 2, 1));
+    }
 }
