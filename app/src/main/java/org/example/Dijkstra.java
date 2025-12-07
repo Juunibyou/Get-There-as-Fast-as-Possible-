@@ -25,6 +25,10 @@ public class Dijkstra {
                 continue;
             }
 
+            if (currentId == end) {
+                return currentDist;
+            }
+
             for (Edge edge : graph.getNexts(currentId)) {
                 int neighbor = edge.getTo();
                 int newDist = currentDist + edge.getWeight();
